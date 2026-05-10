@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pega SPA Navigation Test</title>
+  <style>
+    * { margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+    }
+    .nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .nav a {
+      color: #2E75B6;
+      text-decoration: none;
+    }
+    .nav a:hover {
+      text-decoration: underline;
+    }
+    .content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .loading {
+      color: #666;
+      text-align: center;
+      padding: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a href="#page1" data-case="1">Page 1</a>
+      <a href="#page2" data-case="2">Page 2</a>
+      <a href="#page3" data-case="3">Page 3</a>
+    </div>
+
+    <div class="content">
+      <div id="page1" class="page active">
+        <h2>Page 1 Content</h2>
+        <p>This is the initial page of the SPA.</p>
+        <div class="form-group">
+          <label>Field 1</label>
+          <input type="text" value="Value 1" data-test-id="Field_Field1">
+        </div>
+      </div>
+
+      <div id="page2" class="page">
+        <h2>Page 2 Content</h2>
+        <p>This is page 2 of the SPA.</p>
+        <div class="form-group">
+          <label>Field 2</label>
+          <input type="text" value="Value 2" data-test-id="Field_Field2">
+        </div>
+      </div>
+
+      <div id="page3" class="page">
+        <h2>Page 3 Content</h2>
+        <p>This is page 3 of the SPA.</p>
+        <div class="form-group">
+          <label>Field 3</label>
+          <input type="text" value="Value 3" data-test-id="Field_Field3">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simulate SPA navigation
+    document.querySelectorAll('.nav a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => {
+          page.classList.remove('active');
+        });
+
+        // Show target page
+        const targetPage = document.getElementById(targetId);
+        if (targetPage) {
+          targetPage.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

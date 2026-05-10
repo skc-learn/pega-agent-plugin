@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="pega-application" content="Pega Customer Service">
+  <meta name="pega-version" content="24.1.0">
+  <title>Mock Pega Case - Loan Request WORK-LOAN-12345</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .pega-app {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .pega-header {
+      background: #0078d4;
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pega-header h1 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .pega-header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .pega-user {
+      font-size: 14px;
+    }
+
+    .pega-breadcrumb {
+      background: #f9f9f9;
+      padding: 12px 24px;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .pega-breadcrumb a {
+      color: #0078d4;
+      text-decoration: none;
+    }
+
+    .pega-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    .pega-case-header {
+      padding: 24px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .pega-case-id {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    .pega-case-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .pega-case-meta {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+    }
+
+    .pega-case-meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pega-case-meta-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 2px;
+    }
+
+    .pega-case-meta-value {
+      font-weight: 500;
+    }
+
+    .pega-stages {
+      display: flex;
+      background: #f9f9f9;
+      padding: 16px 24px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .pega-stage {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      padding: 8px;
+    }
+
+    .pega-stage::after {
+      content: '→';
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ccc;
+    }
+
+    .pega-stage:last-child::after {
+      display: none;
+    }
+
+    .pega-stage.active {
+      background: #e3f2fd;
+      border-radius: 4px;
+    }
+
+    .pega-stage.completed {
+      color: #107c10;
+    }
+
+    .pega-stage-name {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .pega-main {
+      display: flex;
+      min-height: 600px;
+    }
+
+    .pega-content {
+      flex: 1;
+      padding: 24px;
+    }
+
+    .pega-section {
+      margin-bottom: 24px;
+    }
+
+    .pega-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .pega-form-row {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    .pega-field {
+      flex: 1;
+    }
+
+    .pega-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    .pega-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .pega-input:focus {
+      outline: none;
+      border-color: #0078d4;
+      box-shadow: 0 0 0 1px #0078d4;
+    }
+
+    .pega-input:disabled {
+      background: #f5f5f5;
+      color: #666;
+    }
+
+    .pega-select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      background: white;
+    }
+
+    .pega-textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .pega-actions {
+      display: flex;
+      gap: 12px;
+      padding: 16px 24px;
+      background: #f9f9f9;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .pega-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .pega-btn-primary {
+      background: #0078d4;
+      color: white;
+    }
+
+    .pega-btn-primary:hover {
+      background: #106ebe;
+    }
+
+    .pega-btn-secondary {
+      background: white;
+      border: 1px solid #ccc;
+      color: #333;
+    }
+
+    .pega-btn-secondary:hover {
+      background: #f5f5f5;
+    }
+
+    .pega-sidebar {
+      width: 300px;
+      background: #f9f9f9;
+      border-left: 1px solid #e0e0e0;
+      padding: 24px;
+    }
+
+    .pega-sidebar-section {
+      margin-bottom: 24px;
+    }
+
+    .pega-sidebar-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .pega-activity-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 13px;
+    }
+
+    .pega-activity-time {
+      font-size: 11px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <!-- Pega root element for detection -->
+  <div id="pega-ui-root" data-pega-app="constellation" data-case-id="WORK-LOAN-12345">
+    <div class="pega-app">
+      <div class="pega-header">
+        <h1>🏦 Loan Request Processing</h1>
+        <div class="pega-header-right">
+          <span class="pega-user">John Smith (Loan Officer)</span>
+          <button class="pega-btn-secondary" style="background: transparent; border: none; color: white; cursor: pointer;">⚙️</button>
+        </div>
+      </div>
+
+      <div class="pega-breadcrumb">
+        <a href="#">My Work</a> &gt;
+        <a href="#">Loan Requests</a> &gt;
+        <span>WORK-LOAN-12345</span>
+      </div>
+
+      <div class="pega-case-header">
+        <div class="pega-case-id">Case ID: WORK-LOAN-12345</div>
+        <div class="pega-case-title">Home Equity Loan Application - Sarah Johnson</div>
+        <div class="pega-case-meta">
+          <div class="pega-case-meta-item">
+            <span class="pega-case-meta-label">Status</span>
+            <span class="pega-case-meta-value" data-case-status="Pending Review">📋 Pending Review</span>
+          </div>
+          <div class="pega-case-meta-item">
+            <span class="pega-case-meta-label">Urgency</span>
+            <span class="pega-case-meta-value">⚡ 85 (High)</span>
+          </div>
+          <div class="pega-case-meta-item">
+            <span class="pega-case-meta-label">SLA Deadline</span>
+            <span class="pega-case-meta-value">⏰ Tomorrow, 5:00 PM</span>
+          </div>
+          <div class="pega-case-meta-item">
+            <span class="pega-case-meta-label">Assigned To</span>
+            <span class="pega-case-meta-value">👤 John Smith</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pega-stages">
+        <div class="pega-stage completed">
+          <div class="pega-stage-name">✓ Application</div>
+        </div>
+        <div class="pega-stage completed">
+          <div class="pega-stage-name">✓ Documentation</div>
+        </div>
+        <div class="pega-stage active" data-stage="Review">
+          <div class="pega-stage-name">● Review</div>
+        </div>
+        <div class="pega-stage">
+          <div class="pega-stage-name">Approval</div>
+        </div>
+        <div class="pega-stage">
+          <div class="pega-stage-name">Funding</div>
+        </div>
+      </div>
+
+      <div class="pega-main">
+        <div class="pega-content">
+          <div class="pega-section">
+            <h2 class="pega-section-title">Applicant Information</h2>
+            <div class="pega-form-row">
+              <div class="pega-field">
+                <label class="pega-label">First Name</label>
+                <input type="text" class="pega-input" data-test-id="Field_FirstName" value="Sarah" aria-label="First Name">
+              </div>
+              <div class="pega-field">
+                <label class="pega-label">Last Name</label>
+                <input type="text" class="pega-input" data-test-id="Field_LastName" value="Johnson" aria-label="Last Name">
+              </div>
+            </div>
+            <div class="pega-form-row">
+              <div class="pega-field">
+                <label class="pega-label">Email Address</label>
+                <input type="email" class="pega-input" data-test-id="Field_Email" value="sarah.johnson@email.com" aria-label="Email Address">
+              </div>
+              <div class="pega-field">
+                <label class="pega-label">Phone Number</label>
+                <input type="tel" class="pega-input" data-test-id="Field_Phone" value="(555) 123-4567" aria-label="Phone Number">
+              </div>
+            </div>
+            <div class="pega-form-row">
+              <div class="pega-field">
+                <label class="pega-label">Date of Birth</label>
+                <input type="date" class="pega-input" data-test-id="Field_DateOfBirth" value="1985-03-15" aria-label="Date of Birth">
+              </div>
+              <div class="pega-field">
+                <label class="pega-label">Social Security Number</label>
+                <input type="text" class="pega-input" data-test-id="Field_SSN" value="***-**-4567" aria-label="Social Security Number" disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="pega-section">
+            <h2 class="pega-section-title">Loan Details</h2>
+            <div class="pega-form-row">
+              <div class="pega-field">
+                <label class="pega-label">Loan Type</label>
+                <select class="pega-select" data-test-id="Field_LoanType">
+                  <option value="home-equity" selected>Home Equity Loan</option>
+                  <option value="mortgage">Mortgage</option>
+                  <option value="personal">Personal Loan</option>
+                  <option value="auto">Auto Loan</option>
+                </select>
+              </div>
+              <div class="pega-field">
+                <label class="pega-label">Loan Amount</label>
+                <input type="number" class="pega-input" data-test-id="Field_LoanAmount" value="75000" aria-label="Loan Amount">
+              </div>
+            </div>
+            <div class="pega-form-row">
+              <div class="pega-field">
+                <label class="pega-label">Loan Term (months)</label>
+                <select class="pega-select" data-test-id="Field_LoanTerm">
+                  <option value="60">60 months (5 years)</option>
+                  <option value="120" selected>120 months (10 years)</option>
+                  <option value="180">180 months (15 years)</option>
+                  <option value="240">240 months (20 years)</option>
+                </select>
+              </div>
+              <div class="pega-field">
+                <label class="pega-label">Purpose</label>
+                <input type="text" class="pega-input" data-test-id="Field_Purpose" value="Home renovation" aria-label="Purpose">
+              </div>
+            </div>
+          </div>
+
+          <div class="pega-section">
+            <h2 class="pega-section-title">Review Notes</h2>
+            <div class="pega-form-row">
+              <div class="pega-field">
+                <label class="pega-label">Review Comments</label>
+                <textarea class="pega-textarea" data-test-id="Field_ReviewComments" placeholder="Enter review comments..." aria-label="Review Comments">Credit score verified at 780. Income documentation complete. Property appraisal pending.</textarea>
+              </div>
+            </div>
+            <div class="pega-form-row">
+              <div class="pega-field">
+                <label class="pega-label">Status</label>
+                <select class="pega-select" data-test-id="Field_Status">
+                  <option value="pending-review" selected>Pending Review</option>
+                  <option value="pending-documentation">Pending Documentation</option>
+                  <option value="ready-for-approval">Ready for Approval</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pega-sidebar">
+          <div class="pega-sidebar-section">
+            <h3 class="pega-sidebar-title">Recent Activity</h3>
+            <div class="pega-activity-item">
+              <div>Status changed to Pending Review</div>
+              <div class="pega-activity-time">Today, 9:30 AM</div>
+            </div>
+            <div class="pega-activity-item">
+              <div>Documentation uploaded</div>
+              <div class="pega-activity-time">Today, 9:15 AM</div>
+            </div>
+            <div class="pega-activity-item">
+              <div>Case assigned to John Smith</div>
+              <div class="pega-activity-time">Yesterday, 4:00 PM</div>
+            </div>
+            <div class="pega-activity-item">
+              <div>Application submitted</div>
+              <div class="pega-activity-time">Yesterday, 2:30 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pega-actions">
+        <button class="pega-btn pega-btn-primary" data-test-id="Action_Submit">Submit</button>
+        <button class="pega-btn pega-btn-secondary" data-test-id="Action_Save">Save</button>
+        <button class="pega-btn pega-btn-secondary" data-test-id="Action_Next">Next</button>
+        <button class="pega-btn pega-btn-secondary" data-test-id="Action_Cancel">Cancel</button>
+        <button class="pega-btn pega-btn-secondary" data-test-id="Action_Escalate">Escalate</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simulate Pega interactions
+    document.querySelectorAll('.pega-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const action = this.dataset.testId || this.textContent;
+        console.log('Pega Action:', action);
+
+        // Simulate save
+        if (action.includes('Save')) {
+          alert('Case saved successfully!');
+        }
+      });
+    });
+
+    // Simulate stage navigation
+    document.querySelectorAll('.pega-stage').forEach(stage => {
+      stage.style.cursor = 'pointer';
+      stage.addEventListener('click', function() {
+        document.querySelectorAll('.pega-stage').forEach(s => s.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
