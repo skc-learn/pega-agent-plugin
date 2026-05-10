@@ -56,6 +56,145 @@
 
 ---
 
+### 🎭 Playwright & Stagehand-Inspired Features
+
+<div align="center">
+
+**Advanced browser automation with self-healing capabilities**
+
+</div>
+
+Inspired by industry-leading tools like **Playwright** and **Stagehand**, the extension includes powerful headless browser automation features:
+
+#### 🎯 Smart Waiting Strategies
+
+Unlike traditional scripts that use fixed delays, we use intelligent waiting:
+
+| Strategy | Use Case | Example |
+|----------|----------|---------|
+| `WAIT_FOR_ELEMENT` | Wait for element to exist | Wait for submit button to appear |
+| `WAIT_FOR_VISIBLE` | Wait for element to be visible | Wait for modal to fade in |
+| `WAIT_FOR_ENABLED` | Wait for element to be clickable | Wait for disabled input to become enabled |
+| `WAIT_FOR_HIDDEN` | Wait for element to disappear | Wait for loading spinner to vanish |
+| `WAIT_FOR_TEXT` | Wait for text content | Wait for "Success" message |
+
+**Benefits:**
+- ⚡ **Faster execution** - No arbitrary delays
+- 🔄 **More reliable** - Waits exactly as long as needed
+- 🛡️ **Flakiness resistant** - Adapts to network conditions
+
+#### 🔍 Self-Healing Selectors
+
+When an action fails, the system automatically tries alternative strategies:
+
+```mermaid
+graph TD
+    A[Action Fails] --> B{Try Alternative}
+    B --> C[Test ID Selector}
+    B --> D[Test Data Attribute}
+    B --> E[ARIA Label]
+    B --> F[Text Content}
+    B --> G[CSS Selector}
+    C --> H{Success?}
+    D --> H
+    E --> H
+    F --> H
+    G --> H
+    H -->|Yes| I[Continue]
+    H -->|No| J[Retry with Fallback]
+```
+
+**Fallback Hierarchy:**
+1. **Test ID** - `data-test-id="submit-btn"`
+2. **Data Attribute** - `data-pega-action="submit"`
+3. **ARIA Label** - `aria-label="Submit case"`
+4. **Text Content** - Button text matches
+5. **CSS Selector** - Structural selector
+6. **Visual Position** - Element coordinates (via screenshot analysis)
+
+#### 📸 Screenshot-Based Visual Validation
+
+Capture and analyze screenshots to verify action results:
+
+```javascript
+// Example: Verify form submission
+await executeAction('CLICK', { selector: '#submit-btn' });
+await executeAction('WAIT_FOR_HIDDEN', { selector: '#loading-spinner' });
+await takeScreenshot();
+await executeAction('VERIFY_VISIBLE', { selector: '.success-message' });
+```
+
+**Visual Capabilities:**
+- 📸 **Screenshot capture** - Full page or element-specific
+- 🔍 **Visual analysis** - Detect elements by appearance
+- ⚖️ **Visual diffing** - Compare before/after states
+- 🎯 **Element detection** - Find elements without selectors
+
+#### 🔄 Multi-Step Workflow Orchestration
+
+Complex workflows with state management and conditional logic:
+
+```yaml
+workflow:
+  name: "Loan Application Intake"
+  steps:
+    - action: NAVIGATE
+      url: "/cases/create/loan"
+    - action: TYPE
+      selector: "#applicant-name"
+      value: "{NAME_1}"  # PII token
+    - action: SELECT
+      selector: "#loan-type"
+      value: "Mortgage"
+    - action: CONDITION
+      condition: "amount > 100000"
+      then: ESCALATE
+      else: SAVE
+```
+
+**Workflow Features:**
+- 📝 **Declarative syntax** - YAML-based workflow definitions
+- 🔄 **Loops** - Batch process multiple cases
+- 🔀 **Conditionals** - If/then/else logic
+- ⏸️ **Pause/Resume** - Control execution
+- 📊 **State persistence** - Share data between steps
+- 🔧 **Error recovery** - Automatic retries with fallback
+
+#### 🎭 Action Execution Engine
+
+Execute complex actions with built-in intelligence:
+
+```javascript
+// Example: Smart form fill
+await executeAction('TYPE', {
+  selector: '#status',
+  value: 'Pending Documentation',
+  waitFor: 'enabled',        // Wait for input to be enabled
+  validate: true,             // Verify value was set
+  screenshotAfter: true       // Take screenshot after action
+});
+```
+
+**Action Options:**
+- ⏱️ **Smart waiting** - Automatic wait conditions
+- ✔️ **Validation** - Verify action succeeded
+- 📸 **Screenshots** - Capture before/after
+- 🔄 **Retry** - Automatic retry with fallback
+- 📝 **Logging** - Complete audit trail
+
+#### 🧪 Visual Regression Testing
+
+Detect UI changes automatically:
+
+| Feature | Description |
+|---------|-------------|
+| **Baseline Capture** | Store screenshots as baseline |
+| **Visual Diff** | Compare current vs baseline |
+| **Change Detection** | Highlight differences |
+| **Regression Alert** | Flag unexpected changes |
+
+---
+
 ### 🧠 Pega-Aware Intelligence
 
 ```mermaid
