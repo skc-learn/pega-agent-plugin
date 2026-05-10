@@ -47,3 +47,19 @@ tests/fixtures/large/
 pega-browser-agent/.DS_Store
 pega-browser-agent/dist/
 pega-browser-agent/coverage/
+
+# Claude Flow - Runtime state and metrics
+.claude-flow/
+.swarm/
+
+# Claude local settings (keep shared config docs)
+.claude/settings.local.json
+.claude/memory.db
+.claude/*.pid
+.claude/**/*.db
+.claude/**/metrics/*.json
+.claude/**/state.json
+.claude/**/daemon-state.json
+
+# Local Claude configurations
+pega-browser-agent/.claude/settings.local.json
