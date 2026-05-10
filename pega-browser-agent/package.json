@@ -1,7 +1,7 @@
 {
   "name": "pega-browser-agent",
   "version": "1.0.0",
-  "description": "Intelligent co-pilot for Pega Infinity case workers",
+  "description": "Third-party browser extension for Pega Infinity case workers",
   "type": "module",
   "scripts": {
     "build": "webpack --mode production",
@@ -16,11 +16,13 @@
     "browser-extension",
     "ai",
     "case-management",
-    "chrome-extension"
+    "chrome-extension",
+    "copilot",
+    "automation"
   ],
-  "author": "Enterprise Pega CoE",
-  "license": "UNLICENSED",
-  "private": true,
+  "author": "skc-learn",
+  "license": "MIT",
+  "private": false,
   "engines": {
     "node": ">=18.0.0"
   },

@@ -1,13 +1,15 @@
 # Pega Agent Plugin
 
-> Intelligent co-pilot browser extension for Pega Infinity case workers
+> **Third-party browser extension for Pega Infinity case workers**
 
 [![Release](https://img.shields.io/github/v/release/skc-learn/pega-agent-plugin)](https://github.com/skc-learn/pega-agent-plugin/releases)
-[![License](https://img.shields.io/badge/license-Enterprise-red)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
+> ⚠️ **Disclaimer**: This is NOT an official Pegasystems product. It is an independent, open-source project created by the community. Use at your own risk. Pegasystems and Pega Infinity are trademarks of Pegasystems Inc.
 
 ## Overview
 
-The Pega Agent Plugin is an enterprise-grade, privacy-first, AI-powered browser extension designed to enhance productivity for Pega Infinity '23+ case workers. It provides intelligent assistance through natural language commands while maintaining strict security and compliance standards.
+The Pega Agent Plugin is a third-party, open-source browser extension designed to enhance productivity for users of Pega Infinity '23+ applications. It provides AI-powered assistance through natural language commands while maintaining strict security and privacy standards.
 
 ## 📚 Documentation
 
@@ -217,7 +219,11 @@ This is an enterprise project. For contributions:
 
 ## License
 
-Enterprise License - Contact your Pega account representative for licensing details.
+MIT License - See [LICENSE](LICENSE) file for details.
+
+## Disclaimer
+
+This project is NOT affiliated with, endorsed by, or connected to Pegasystems Inc. in any way. "Pega," "Pega Infinity," and related marks are trademarks of Pegasystems Inc. This is an independent community project.
 
 ## Support
 
@@ -227,4 +233,6 @@ Enterprise License - Contact your Pega account representative for licensing deta
 
 ---
 
-**Built with ❤️ for the Pega Community**
+**Built with ❤️ by the Pega Community**
+
+> This project is an independent community effort and is not officially affiliated with Pegasystems Inc.

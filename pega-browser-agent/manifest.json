@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Pega Case Management Agent",
+  "name": "Pega Case Management Agent (Community)",
   "version": "1.0.0",
-  "description": "Intelligent co-pilot for Pega Infinity case workers",
+  "description": "Third-party AI assistant for Pega Infinity users. NOT an official Pegasystems product.",
   "permissions": [
     "activeTab",
     "scripting",
