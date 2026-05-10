@@ -9,6 +9,17 @@
 
 The Pega Agent Plugin is an enterprise-grade, privacy-first, AI-powered browser extension designed to enhance productivity for Pega Infinity '23+ case workers. It provides intelligent assistance through natural language commands while maintaining strict security and compliance standards.
 
+## 📚 Documentation
+
+| Document | Description |
+|----------|-------------|
+| **[Architecture](docs/architecture.md)** | System architecture, components, data flow, and design decisions |
+| **[API Reference](docs/api.md)** | Complete API documentation for all interfaces, types, and methods |
+| **[Developer Guide](docs/DEVELOPER_GUIDE.md)** | Setup, development workflow, testing, and contribution guidelines |
+| **[Security](docs/SECURITY.md)** | Security model, PII protection, threat analysis, and compliance |
+| **[Roadmap](docs/ROADMAP.md)** | 5-rung integration ladder and migration strategy |
+| **[Usage Examples](docs/USAGE_EXAMPLES.md)** | Practical examples, workflows, and troubleshooting |
+
 ## Features
 
 ### 🧠 Pega-Aware Intelligence
