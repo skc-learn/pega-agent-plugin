@@ -1,103 +1,214 @@
-# Pega Agent Plugin
+<div align="center">
 
-> **Third-party browser extension for Pega Infinity case workers**
+  ![Pega Agent Plugin](https://raw.githubusercontent.com/skc-learn/pega-agent-plugin/main/.github/assets/banner.png)
 
-[![Release](https://img.shields.io/github/v/release/skc-learn/pega-agent-plugin)](https://github.com/skc-learn/pega-agent-plugin/releases)
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+  # 🤖 Pega Agent Plugin
 
-> ⚠️ **Disclaimer**: This is NOT an official Pegasystems product. It is an independent, open-source project created by the community. Use at your own risk. Pegasystems and Pega Infinity are trademarks of Pegasystems Inc.
+  ### **Third-party AI-powered browser extension for Pega Infinity case workers**
 
-## Overview
+  [![Release](https://img.shields.io/github/v/release/skc-learn/pega-agent-plugin?include_prereleases&sort=semver)](https://github.com/skc-learn/pega-agent-plugin/releases)
+  [![License](https://img.shields.io/github/license/skc-learn/pega-agent-plugin?color=blue)](LICENSE)
+  [![Contributors](https://img.shields.io/github/contributors/skc-learn/pega-agent-plugin)](https://github.com/skc-learn/pega-agent-plugin/graphs/contributors)
+  [![Stars](https://img.shields.io/github/stars/skc-learn/pega-agent-plugin?style=social)](https://github.com/skc-learn/pega-agent-plugin/stargazers)
 
-The Pega Agent Plugin is a third-party, open-source browser extension designed to enhance productivity for users of Pega Infinity '23+ applications. It provides AI-powered assistance through natural language commands while maintaining strict security and privacy standards.
+  [![TypeScript](https://img.shields.io/badge/Typescript-5.3-blue?logo=typescript)](https://www.typescriptlang.org/)
+  [![Chrome Extension](https://img.shields.io/badge/Chrome-Manifest%20V3-green?logo=google-chrome)](https://developer.chrome.com/docs/extensions/mv3/)
+  [![AI](https://img.shields.io/badge/AI-Anthropic%20%7C%20OpenAI%20%7C%20Azure-purple?logo=anthropic)](https://www.anthropic.com/)
 
-## 📚 Documentation
+  **⚠️ Disclaimer**: This is NOT an official Pegasystems product. It's an independent open-source community project.
 
-| Document | Description |
-|----------|-------------|
-| **[Architecture](docs/architecture.md)** | System architecture, components, data flow, and design decisions |
-| **[API Reference](docs/api.md)** | Complete API documentation for all interfaces, types, and methods |
-| **[Developer Guide](docs/DEVELOPER_GUIDE.md)** | Setup, development workflow, testing, and contribution guidelines |
-| **[Security](docs/SECURITY.md)** | Security model, PII protection, threat analysis, and compliance |
-| **[Roadmap](docs/ROADMAP.md)** | 5-rung integration ladder and migration strategy |
-| **[Usage Examples](docs/USAGE_EXAMPLES.md)** | Practical examples, workflows, and troubleshooting |
+</div>
 
-## Features
+---
+
+## 📋 Table of Contents
+
+- [✨ Features](#-features)
+- [🚀 Quick Start](#-quick-start)
+- [📚 Documentation](#-documentation)
+- [🏗️ Architecture](#️-architecture)
+- [⚙️ Configuration](#️-configuration)
+- [🧪 Development](#-development)
+- [🗺️ Roadmap](#️-roadmap)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+
+---
+
+## ✨ Features
+
+<div align="center">
+
+### 🎯 Core Capabilities
+
+| Feature | Description | Status |
+|---------|-------------|--------|
+| 🧠 **Pega-Aware Intelligence** | Auto-detects Pega apps, extracts case context, understands domain | ✅ Stable |
+| 🔒 **Privacy-First PII Protection** | 8 categories, field-level masking, tokenization before transmission | ✅ Stable |
+| 💬 **Natural Language Commands** | 11 supported intents, local & AI-powered | ✅ Stable |
+| 📊 **Case Summarization** | Auto-generated 4-part summaries with risk signals | ✅ Stable |
+| 🎯 **Action Planning** | 14 action types with smart waiting & confirmation | ✅ Stable |
+| 👁️ **Visual Understanding** | Screenshot capture & visual analysis | ✅ Stable |
+| 🔄 **Workflow Automation** | Multi-step workflows with self-healing | ✅ Stable |
+| 🔌 **MCP Server** | Full Model Context Protocol implementation | ✅ Stable |
+
+</div>
+
+---
 
 ### 🧠 Pega-Aware Intelligence
-- **Automatic Detection**: Recognizes Pega applications by domain, UI patterns, and DOM structure
-- **Framework Support**: Works with Constellation (React), Cosmos (Angular), and Classic UI
-- **Domain Knowledge**: Built-in expertise for Financial Lending, Insurance Claims, Healthcare, and Service Management
-- **Case Context**: Extracts case ID, type, status, stage, assignee, and urgency automatically
+
+```mermaid
+graph LR
+    A[Pega App] --> B[Detector]
+    B --> C{Framework?}
+    C -->|Constellation| D[React]
+    C -->|Cosmos| E[Angular]
+    C -->|Classic| F[JSP]
+    D --> G[Case Context]
+    E --> G
+    F --> G
+    G --> H[Domain Knowledge]
+```
+
+**Capabilities:**
+- 🎯 **Automatic Detection** - Recognizes Pega by domain, UI patterns, DOM structure
+- 🖼️ **Framework Support** - Constellation (React), Cosmos (Angular), Classic UI
+- 🏦 **Domain Knowledge** - Financial Lending, Insurance Claims, Healthcare, Service Management
+- 📋 **Case Context** - Extracts ID, type, status, stage, assignee, urgency automatically
+
+---
 
 ### 🔒 Privacy & Security First
-- **8 PII Categories**: NAME, SSN, DOB, EMAIL, PHONE, ACCOUNT, ADDRESS, INCOME
-- **Field-Level Masking**: Tokenizes sensitive data before any external transmission
-- **Session Isolation**: Automatic cleanup of tokens when session ends
-- **Audit Trail**: Complete logging with masked tokens only
-- **Zero Pega Auth**: Never accesses Pega authentication tokens
+
+| PII Category | Pattern Examples | Mask Format |
+|--------------|------------------|-------------|
+| **NAME** | First Name, Last Name, Full Name | `{NAME_1}` |
+| **SSN** | Social Security, Tax ID, EIN | `{SSN_1}` |
+| **DOB** | Date of Birth, Birth Date | `{DOB_1}` |
+| **EMAIL** | Email, E-Mail Address | `{EMAIL_1}` |
+| **PHONE** | Phone, Mobile, Cell, Telephone | `{PHONE_1}` |
+| **ACCOUNT** | Account Number, Card Number, Policy # | `{ACCOUNT_1}` |
+| **ADDRESS** | Address, Street, City, State, ZIP | `{ADDRESS_1}` |
+| **INCOME** | Income, Salary, Annual Income | `{INCOME_1}` |
+
+**Security Guarantees:**
+- ✅ Field-level masking before ANY external transmission
+- ✅ Session-scoped token isolation
+- ✅ Complete audit trail with masked tokens only
+- ✅ Never accesses Pega authentication tokens
+- ✅ Local-first processing with user control
+
+---
 
 ### 💬 Natural Language Commands
-11 supported intents for hands-free case management:
 
-**Local (No LLM Required)**:
-- `Summarize this case` - Generate 4-part case summary
-- `Submit/Complete` - Submit case (requires confirmation)
-- `Save` - Persist changes
-- `Next` - Proceed to next step
-- `My queue` - Show assigned cases
+<details>
+<summary><b>Local Intents (No LLM Required)</b></summary>
 
-**AI-Powered**:
-- `Update the status to [value]` - Field updates
-- `Escalate to supervisor` - Transfer case
-- `Create a new case` - Start new case
-- `Open case ABC-123` - Navigate to case
-- `Find cases with...` - Search
-- `Explain why...` - Get explanations
+| Command | Action | Confidence |
+|---------|--------|------------|
+| `Summarize this case` | Generate 4-part case summary | 95% |
+| `Submit/Complete` | Submit case (requires confirmation) | 90% |
+| `Save` | Persist changes | 95% |
+| `Next` | Proceed to next step | 92% |
+| `My queue` | Show assigned cases | 88% |
+
+</details>
+
+<details>
+<summary><b>AI-Powered Intents</b></summary>
+
+| Command | Action | Requires |
+|---------|--------|----------|
+| `Update the status to [value]` | Field updates | LLM |
+| `Escalate to supervisor` | Transfer case | LLM |
+| `Create a new case` | Start new case | LLM |
+| `Open case ABC-123` | Navigate to case | LLM |
+| `Find cases with...` | Search & filter | LLM |
+| `Explain why...` | Get explanations | LLM |
+
+</details>
+
+---
 
 ### 📊 Case Summarization
-Auto-generated 4-part summaries when cases open:
-1. **Situation**: What the case is about
-2. **History**: Key events and timeline
-3. **Current State**: Present status and data
-4. **Risk Signals**: SLA risks, blockers, recommendations
+
+**Auto-generated 4-part summaries when cases open:**
+
+```markdown
+## Situation
+Brief description of what the case is about and why it was created.
+
+## History
+- 2025-03-01: Case created
+- 2025-03-05: Initial review completed
+- 2025-03-07: Documentation requested
+
+## Current State
+Status: Pending Documentation
+Stage: Processing
+Assignee: John Doe
+Urgency: High
+
+## Risk Signals
+⚠️ SLA at risk (3 days remaining)
+⚠️ Required field missing: .Description
+⚠️ No updates in 48 hours
+```
+
+---
 
 ### 🎯 Action Planning & Execution
-- **14 Action Types**: CLICK, TYPE, SELECT, WAIT_FOR_ELEMENT, VERIFY_VISIBLE, and more
-- **Smart Waiting**: WAIT_FOR_VISIBLE, WAIT_FOR_ENABLED instead of fixed delays
-- **Confirmation**: Review and approve actions before execution
-- **Self-Healing**: Automatic retries with alternative selectors
 
-### 👁️ Visual Understanding
-- **Screenshot Capture**: Visual analysis of current page state
-- **Element Detection**: Find elements by visual appearance
-- **Validation**: Visual diffing to confirm action results
+**14 Action Types:**
+- `CLICK` - Click buttons, links, checkboxes
+- `TYPE` - Enter text in input fields
+- `SELECT` - Choose dropdown options
+- `CLEAR` - Clear field values
+- `NAVIGATE` - Navigate to URLs
+- `WAIT_FOR_ELEMENT` - Wait until element exists
+- `WAIT_FOR_VISIBLE` - Wait until element is visible
+- `WAIT_FOR_ENABLED` - Wait until element is enabled
+- `WAIT_FOR_HIDDEN` - Wait until element is hidden
+- `WAIT_FOR_TEXT` - Wait for text to appear
+- `VERIFY_VISIBLE` - Confirm element is visible
+- `ASSERT_TEXT` - Validate text content
+- `SCROLL` - Scroll page or element
+- `WAIT` - Fixed time delay (use sparingly)
 
-### 🔄 Workflow Automation
-- **Multi-Step Workflows**: Complex automation sequences
-- **Conditional Logic**: If/then/else branching
-- **State Management**: Persistent state across steps
-- **Pause/Resume**: Control workflow execution
+---
 
 ### 🔌 MCP Server
-Full Model Context Protocol server for external integrations:
-- **Tools**: parse_dom, execute_action, generate_summary, capture_screenshot, create_workflow
-- **Resources**: case_context, dom_snapshot, case_summary, audit_log
-- **Protocol**: JSON-RPC 2.0 compliant
 
-### 🤖 Multi-LLM Support
-- **Anthropic Claude** (default)
-- **Azure OpenAI**
-- **OpenAI**
-- **Local LLM** via custom endpoint
+**Model Context Protocol for external integrations:**
 
-### ⚙️ Enterprise Configuration
-- **Role-Based Access**: caseWorker, supervisor, readOnly roles
-- **PII Policies**: Configure which categories to mask
-- **Domain Restrictions**: Allowlist specific Pega domains
-- **Custom Heuristics**: Extend Pega knowledge
+| Tool | Description |
+|------|-------------|
+| `pega_get_case_summary` | Generate case summary |
+| `pega_execute_action_plan` | Execute action plan |
+| `pega_get_dom_snapshot` | Get current DOM state |
+| `pega_detect_framework` | Detect Pega framework |
+| `pega_update_field` | Update field value |
+| `pega_click_action` | Click action button |
+| `pega_navigate_case` | Navigate to case |
+| `pega_wait_for` | Smart wait condition |
 
-## Quick Start
+**Resources:**
+- `case_context` - Current case information
+- `dom_snapshot` - Current DOM state
+- `case_summary` - Generated case summary
+- `audit_log` - Action audit trail
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Node.js** 18+ 
+- **Chrome/Edge** (Manifest V3 support)
+- **LLM API Key** (Anthropic, OpenAI, or Azure)
 
 ### Installation
 
@@ -115,46 +226,210 @@ npm run build
 
 ### Load in Chrome
 
-1. Open `chrome://extensions/`
-2. Enable **Developer mode** (top right)
+<div align="center">
+
+```mermaid
+flowchart LR
+    A[Open chrome://extensions/] --> B[Enable Developer Mode]
+    B --> C[Click Load Unpacked]
+    C --> D[Select pega-browser-agent Folder]
+    D --> E[Extension Loaded!]
+```
+
+</div>
+
+**Steps:**
+1. Navigate to `chrome://extensions/`
+2. Toggle **Developer mode** (top right)
 3. Click **Load unpacked**
 4. Select the `pega-browser-agent` folder
 
 ### Configure API Key
 
-Open the extension settings or run in browser console:
-
 ```javascript
+// Via browser console
 chrome.storage.session.set({ 'llm-api-key': 'your-api-key' });
+
+// Or via extension settings
+chrome://extensions/ → Pega Agent Plugin → Details → Extension settings
 ```
 
 ### Usage
+
+<div align="center">
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Extension
+    participant Pega
+    participant LLM
+
+    User->>Extension: Navigate to Pega app
+    Extension->>Pega: Detect Pega & Extract context
+    Extension->>Extension: Generate case summary
+    Extension->>User: Display summary in side panel
+    User->>Extension: "Update status to Pending"
+    Extension->>LLM: Plan action
+    LLM->>Extension: Return action plan
+    Extension->>User: Show confirmation
+    User->>Extension: Approve
+    Extension->>Pega: Execute action
+```
+
+</div>
 
 1. Navigate to any Pega Infinity application
 2. Click the extension icon or press `Ctrl+Shift+P`
 3. Use natural language commands in the side panel
 
-## Project Structure
+---
 
-```
-pega-agent-plugin/
-├── pega-browser-agent/          # Main extension code
-│   ├── src/
-│   │   ├── content-scripts/     # DOM interaction
-│   │   ├── service-worker/      # Background processing
-│   │   ├── side-panel/          # UI panel
-│   │   ├── shared/              # Common utilities
-│   │   └── config/              # Configuration
-│   ├── tests/                   # Unit tests
-│   ├── public/                  # HTML/CSS assets
-│   └── manifest.json            # Extension manifest
-└── README.md                    # This file
+## 📚 Documentation
+
+| Document | Description | Link |
+|----------|-------------|------|
+| 🏗️ **Architecture** | System design, components, data flow | [View](docs/architecture.md) |
+| 📖 **API Reference** | Complete API documentation | [View](docs/api.md) |
+| 👨‍💻 **Developer Guide** | Setup, development, testing | [View](docs/DEVELOPER_GUIDE.md) |
+| 🔒 **Security** | Security model, PII protection, compliance | [View](docs/SECURITY.md) |
+| 🗺️ **Roadmap** | 5-rung integration ladder | [View](docs/ROADMAP.md) |
+| 💡 **Usage Examples** | Practical examples & troubleshooting | [View](docs/USAGE_EXAMPLES.md) |
+
+---
+
+## 🏗️ Architecture
+
+<div align="center">
+
+```mermaid
+graph TB
+    subgraph "Browser Extension"
+        SW[Service Worker]
+        CS[Content Scripts]
+        SP[Side Panel]
+    end
+    
+    subgraph "Content Scripts"
+        PD[Pega Detector]
+        DP[DOM Parser]
+        PM[PII Masker]
+        AE[Action Executor]
+    end
+    
+    subgraph "Service Worker"
+        PL[Planner]
+        LA[LLM Adapter]
+        SG[Summary Generator]
+        MC[MCP Server]
+    end
+    
+    SW <--> CS
+    SW <--> SP
+    
+    PD --> DP
+    DP --> PM
+    PM --> PL
+    PL --> LA
+    LA --> SG
+    PL --> AE
+    
+    MC --> PL
+    MC --> DP
 ```
 
-## Development
+</div>
+
+**Component Overview:**
+
+| Component | Responsibility |
+|-----------|----------------|
+| **Service Worker** | Central message router, orchestrator, LLM adapter |
+| **Content Scripts** | DOM interaction, PII masking, action execution |
+| **Side Panel** | Chat-style UI controller |
+| **PII Masker** | Field classification & tokenization |
+| **DOM Parser** | Semantic DOM extraction |
+| **Planner** | Intent-to-action transformation |
+| **MCP Server** | External integration protocol |
+
+---
+
+## ⚙️ Configuration
+
+### Default Configuration
+
+```json
+{
+  "security": {
+    "piiMaskingEnabled": true,
+    "piiCategoriesToMask": [
+      "NAME", "SSN", "DOB", "EMAIL", 
+      "PHONE", "ACCOUNT", "ADDRESS", "INCOME"
+    ],
+    "auditLoggingEnabled": true
+  },
+  "llm": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-4-20250514",
+    "maxTokens": 1500,
+    "temperature": 0.1
+  },
+  "pega": {
+    "autoDetect": true,
+    "allowedDomains": ["*.pegacloud.io", "*.pega.com"]
+  },
+  "roleRestrictions": {
+    "caseWorker": [
+      "SUMMARIZE_CASE", "UPDATE_FIELD", 
+      "NEXT_STEP", "SAVE_CASE", "SHOW_QUEUE"
+    ],
+    "supervisor": ["*"],
+    "readOnly": [
+      "SUMMARIZE_CASE", "SHOW_QUEUE", "EXPLAIN"
+    ]
+  }
+}
+```
+
+### Multi-LLM Configuration
+
+```json
+{
+  "llm": {
+    "provider": "multi",
+    "providers": [
+      {
+        "name": "anthropic",
+        "apiKey": "sk-ant-...",
+        "models": ["claude-sonnet-4-20250514"]
+      },
+      {
+        "name": "azure-openai",
+        "endpoint": "https://your-resource.openai.azure.com/",
+        "apiKey": "your-key",
+        "models": ["gpt-4"]
+      }
+    ],
+    "fallback": true
+  }
+}
+```
+
+---
+
+## 🧪 Development
+
+### Development Workflow
 
 ```bash
-# Development mode with watch
+# Clone the repository
+git clone https://github.com/skc-learn/pega-agent-plugin.git
+cd pega-agent-plugin/pega-browser-agent
+
+# Install dependencies
+npm install
+
+# Development mode with hot reload
 npm run dev
 
 # Run tests
@@ -173,66 +448,232 @@ npm run build
 npm run package
 ```
 
-## Configuration
+### Project Structure
 
-Edit `config/default-config.json`:
-
-```json
-{
-  "security": {
-    "piiMaskingEnabled": true,
-    "piiCategoriesToMask": ["NAME", "SSN", "DOB", "EMAIL", "PHONE", "ACCOUNT", "ADDRESS"]
-  },
-  "llm": {
-    "provider": "anthropic",
-    "model": "claude-sonnet-4-20250514",
-    "maxTokens": 1500,
-    "temperature": 0.1
-  },
-  "roleRestrictions": {
-    "caseWorker": ["SUMMARIZE_CASE", "UPDATE_FIELD", "NEXT_STEP", "SAVE_CASE"],
-    "supervisor": ["*"],
-    "readOnly": ["SUMMARIZE_CASE", "SHOW_QUEUE", "EXPLAIN"]
-  }
-}
+```
+pega-browser-agent/
+├── src/
+│   ├── content-scripts/     # DOM interaction
+│   │   ├── pega-detector.ts
+│   │   ├── dom-parser.ts
+│   │   ├── pii-masker.ts
+│   │   └── action-executor.ts
+│   ├── service-worker/      # Background processing
+│   │   ├── sw.ts
+│   │   ├── planner.ts
+│   │   ├── llm-adapter.ts
+│   │   └── mcp-server.ts
+│   ├── side-panel/          # UI panel
+│   │   └── panel.ts
+│   ├── shared/              # Common utilities
+│   │   ├── types.ts
+│   │   ├── message-types.ts
+│   │   └── pega-heuristics.ts
+│   └── config/              # Configuration
+│       └── default-config.ts
+├── tests/                   # Unit tests
+│   ├── unit/
+│   └── fixtures/
+├── public/                  # HTML/CSS assets
+├── manifest.json            # Extension manifest
+├── package.json
+├── tsconfig.json
+└── webpack.config.cjs
 ```
 
-## Roadmap
+### Testing
 
-This is **Rung 1** of a 5-rung integration ladder:
+```bash
+# Run all tests
+npm test
 
-1. ✅ **Rung 1** (Now): Browser extension with DOM parsing and LLM intelligence
-2. 🔄 **Rung 2**: Direct Pega API integration replacing DOM parsing
-3. ⏳ **Rung 3**: CDH and Prediction Studio integration
-4. ⏳ **Rung 4**: Constellation-native component
-5. ⏳ **Rung 5**: Platform Rules and Data Fabric integration
+# Run tests in watch mode
+npm test -- --watch
 
-## Contributing
+# Run tests with coverage
+npm test -- --coverage
 
-This is an enterprise project. For contributions:
+# Run specific test file
+npm test -- pii-masker.test.ts
+```
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes with tests
-4. Ensure all tests pass
-5. Submit a pull request
-
-## License
-
-MIT License - See [LICENSE](LICENSE) file for details.
-
-## Disclaimer
-
-This project is NOT affiliated with, endorsed by, or connected to Pegasystems Inc. in any way. "Pega," "Pega Infinity," and related marks are trademarks of Pegasystems Inc. This is an independent community project.
-
-## Support
-
-- **Issues**: https://github.com/skc-learn/pega-agent-plugin/issues
-- **Documentation**: See `pega-browser-agent/README.md` for detailed docs
-- **Enterprise Support**: Contact your Pega CoE team
+**Test Coverage:**
+- ✅ PII Masker: 8 categories × 100+ test cases
+- ✅ Intent Classifier: 11 intents × positive/negative examples
+- ✅ Session isolation tests
+- ✅ Token resolution tests
 
 ---
 
-**Built with ❤️ by the Pega Community**
+## 🗺️ Roadmap
+
+<div align="center">
+
+```mermaid
+timeline
+    title Pega Agent Plugin Roadmap
+    section Rung 1 (Now)
+        Browser Extension : DOM parsing & LLM : ✅ Complete
+    section Rung 2 (Q2 2025)
+        Pega API Integration : Direct REST API : 🔄 In Progress
+    section Rung 3 (Q3 2025)
+        CDH Integration : Prediction Studio : ⏳ Planned
+    section Rung 4 (Q4 2025)
+        Constellation Native : Component-based : ⏳ Planned
+    section Rung 5 (Q1 2026)
+        Platform Integration : Data Fabric : ⏳ Planned
+```
+
+</div>
+
+**5-Rung Integration Ladder:**
+
+| Rung | Capability | Status | Timeline |
+|------|------------|--------|----------|
+| **1** | Browser Extension with DOM parsing | ✅ Complete | Now |
+| **2** | Direct Pega API integration | 🔄 Beta | Q2 2025 |
+| **3** | CDH and Prediction Studio | ⏳ Alpha | Q3 2025 |
+| **4** | Constellation-native component | ⏳ Design | Q4 2025 |
+| **5** | Platform Rules & Data Fabric | ⏳ Research | Q1 2026 |
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how to get started:
+
+<div align="center">
+
+```mermaid
+flowchart LR
+    A[Fork Repository] --> B[Create Feature Branch]
+    B --> C[Make Changes]
+    C --> D[Add Tests]
+    D --> E[Run Tests]
+    E --> F{Tests Pass?}
+    F -->|No| C
+    F -->|Yes| G[Submit Pull Request]
+    G --> H[Code Review]
+    H --> I{Approved?}
+    I -->|No| C
+    I -->|Yes| J[Merged!]
+```
+
+</div>
+
+### Contribution Guidelines
+
+1. 🍴 **Fork** the repository
+2. 🔀 **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. 💾 **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. 📤 **Push** to the branch (`git push origin feature/amazing-feature`)
+5. 🔃 **Open** a Pull Request
+
+### Code Style
+
+- **TypeScript** with strict typing (no `any` types)
+- **CamelCase** for variables and functions
+- **PascalCase** for classes and interfaces
+- **kebab-case** for file names
+- **JSDoc** comments for all public APIs
+
+### Pull Request Checklist
+
+- [ ] Tests added/updated
+- [ ] All tests passing
+- [ ] Documentation updated
+- [ ] Code follows style guidelines
+- [ ] Commit messages are clear
+- [ ] No merge conflicts
+
+---
+
+## 📄 License
+
+<div align="center">
+
+```mermaid
+graph LR
+    A[MIT License] --> B[✅ Free to use]
+    A --> C[✅ Free to modify]
+    A --> D[✅ Free to distribute]
+    A --> E[❌ No warranty]
+```
+
+</div>
+
+**MIT License** - See [LICENSE](LICENSE) file for details.
+
+This project is free to use, modify, and distribute. No warranty is provided.
+
+---
+
+## ⚠️ Disclaimer
+
+<div align="center">
+
+### This is NOT an official Pegasystems product
+
+</div>
+
+This project is:
+- ❌ **NOT** affiliated with Pegasystems Inc.
+- ❌ **NOT** endorsed by Pegasystems Inc.
+- ❌ **NOT** sponsored by Pegasystems Inc.
+- ❌ **NOT** supported by Pegasystems Inc.
+
+### Trademark Notice
+
+**Pega®**, **Pega Infinity®**, **Pega Infinity '23**, **Pega PLATFORM®**, **Pega Cosmos®**, **Pega Constellation®**, and all related marks are trademarks of **Pegasystems Inc.**
+
+These trademarks are used only for descriptive purposes to indicate compatibility with Pega applications.
+
+### Use at Your Own Risk
+
+- ✅ Test thoroughly in non-production environments
+- ✅ Ensure compliance with your organization's security policies
+- ✅ Review code and configuration before production use
+- ❌ Authors are NOT liable for any damage to data or systems
+
+---
+
+## 📞 Support
+
+<div align="center">
+
+### Need Help?
+
+</div>
+
+| Resource | Link |
+|----------|------|
+| **Issues** | [GitHub Issues](https://github.com/skc-learn/pega-agent-plugin/issues) |
+| **Discussions** | [GitHub Discussions](https://github.com/skc-learn/pega-agent-plugin/discussions) |
+| **Documentation** | [Full Docs](https://github.com/skc-learn/pega-agent-plugin/tree/main/docs) |
+| **Pega Support** | [Pega Community](https://community.pega.com/) |
+
+---
+
+<div align="center">
+
+## ⭐ Star Us on GitHub!
+
+If you find this project helpful, please consider giving it a star ⭐
+
+[![Star](https://img.shields.io/github/stars/skc-learn/pega-agent-plugin?style=social)](https://github.com/skc-learn/pega-agent-plugin/stargazers)
+
+---
+
+### Built with ❤️ by the Pega Community
 
 > This project is an independent community effort and is not officially affiliated with Pegasystems Inc.
+
+[🏠 Back to Home](https://github.com/skc-learn/pega-agent-plugin)
+•
+[📖 Documentation](https://github.com/skc-learn/pega-agent-plugin/tree/main/docs)
+•
+[🐛 Report Issue](https://github.com/skc-learn/pega-agent-plugin/issues)
+•
+[💡 Feature Request](https://github.com/skc-learn/pega-agent-plugin/issues/new?template=feature_request.md)
+
+</div>
