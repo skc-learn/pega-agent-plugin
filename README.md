@@ -1,7 +1,5 @@
 <div align="center">
 
-  ![Pega Agent Plugin](https://raw.githubusercontent.com/skc-learn/pega-agent-plugin/main/.github/assets/banner.png)
-
   # 🤖 Pega Agent Plugin
 
   ### **Third-party AI-powered browser extension for Pega Infinity case workers**
@@ -26,10 +24,10 @@
 - [✨ Features](#-features)
 - [🚀 Quick Start](#-quick-start)
 - [📚 Documentation](#-documentation)
-- [🏗️ Architecture](#️-architecture)
-- [⚙️ Configuration](#️-configuration)
+- [🏗️ Architecture](#-architecture)
+- [⚙️ Configuration](#-configuration)
 - [🧪 Development](#-development)
-- [🗺️ Roadmap](#️-roadmap)
+- [🗺️ Roadmap](#-roadmap)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
 
@@ -811,8 +809,8 @@ If you find this project helpful, please consider giving it a star ⭐
 •
 [📖 Documentation](https://github.com/skc-learn/pega-agent-plugin/tree/main/docs)
 •
-[🐛 Report Issue](https://github.com/skc-learn/pega-agent-plugin/issues)
+[🐛 Report Issue](https://github.com/skc-learn/pega-agent-plugin/issues/new)
 •
-[💡 Feature Request](https://github.com/skc-learn/pega-agent-plugin/issues/new?template=feature_request.md)
+[💡 Feature Request](https://github.com/skc-learn/pega-agent-plugin/issues/new)
 
 </div>
