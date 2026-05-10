@@ -88,11 +88,11 @@ When an action fails, the system automatically tries alternative strategies:
 ```mermaid
 graph TD
     A[Action Fails] --> B{Try Alternative}
-    B --> C[Test ID Selector}
-    B --> D[Test Data Attribute}
+    B --> C[Test ID Selector]
+    B --> D[Test Data Attribute]
     B --> E[ARIA Label]
-    B --> F[Text Content}
-    B --> G[CSS Selector}
+    B --> F[Text Content]
+    B --> G[CSS Selector]
     C --> H{Success?}
     D --> H
     E --> H
