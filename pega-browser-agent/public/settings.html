@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pega Agent - LLM Configuration</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #2E75B6;
+      --primary-dark: #1e5a8f;
+      --background: #F5F7FA;
+      --surface: #FFFFFF;
+      --text: #1A1A2E;
+      --text-secondary: #666666;
+      --border: #E0E0E0;
+      --success: #4CAF50;
+      --error: #F44336;
+      --warning: #FF9800;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #121212;
+        --surface: #1E1E1E;
+        --text: #E0E0E0;
+        --text-secondary: #9E9E9E;
+        --border: #333333;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--background);
+      min-height: 100vh;
+      padding: 24px;
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0;
+    }
+
+    .tab {
+      padding: 12px 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+
+    .tab:hover {
+      color: var(--text);
+    }
+
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .card-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-header .provider-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .card-body.collapsed {
+      display: none;
+    }
+
+    /* Toggle Switch */
+    .toggle-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 26px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--border);
+      border-radius: 26px;
+      transition: 0.3s;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    .toggle input:checked + .toggle-slider {
+      background: var(--primary);
+    }
+
+    .toggle input:checked + .toggle-slider:before {
+      transform: translateX(22px);
+    }
+
+    .priority-badge {
+      background: var(--primary);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      background: var(--background);
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    .form-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Range Slider */
+    .range-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .range-group input[type="range"] {
+      flex: 1;
+      height: 6px;
+      -webkit-appearance: none;
+      background: var(--border);
+      border-radius: 3px;
+      outline: none;
+    }
+
+    .range-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .range-value {
+      min-width: 50px;
+      text-align: center;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: var(--background);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* Status Messages */
+    .status {
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      display: none;
+    }
+
+    .status.success {
+      display: block;
+      background: rgba(76, 175, 80, 0.1);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+
+    .status.error {
+      display: block;
+      background: rgba(244, 67, 54, 0.1);
+      color: var(--error);
+      border: 1px solid var(--error);
+    }
+
+    /* Fallback Order */
+    .fallback-order {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 16px;
+      background: var(--background);
+      border-radius: 8px;
+    }
+
+    .fallback-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--surface);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+    .fallback-item .drag-handle {
+      cursor: grab;
+      color: var(--text-secondary);
+    }
+
+    .fallback-item .provider-name {
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .fallback-item .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .fallback-item .status-indicator.active {
+      background: var(--success);
+    }
+
+    .fallback-item .status-indicator.inactive {
+      background: var(--border);
+    }
+
+    /* Advanced Section */
+    .advanced-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .advanced-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      margin-bottom: 16px;
+    }
+
+    .advanced-toggle:hover {
+      color: var(--text);
+    }
+
+    .advanced-options {
+      display: none;
+    }
+
+    .advanced-options.visible {
+      display: block;
+    }
+
+    /* Test Connection */
+    .test-result {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .test-result.success {
+      background: rgba(76, 175, 80, 0.1);
+      color: var(--success);
+    }
+
+    .test-result.error {
+      background: rgba(244, 67, 54, 0.1);
+      color: var(--error);
+    }
+
+    /* MCP Styles */
+    .mcp-server-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mcp-server-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      background: var(--background);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .mcp-server-info {
+      flex: 1;
+    }
+
+    .mcp-server-info h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .mcp-server-info p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .mcp-server-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .mcp-server-actions button {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .mcp-tools-list, .mcp-resources-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mcp-tool-item, .mcp-resource-item {
+      padding: 12px 16px;
+      background: var(--background);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .mcp-tool-header, .mcp-resource-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .mcp-tool-header p, .mcp-resource-header p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .mcp-badge {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      background: var(--primary);
+      color: white;
+    }
+
+    .mcp-badge.resource {
+      background: var(--success);
+    }
+
+    .mcp-badge.connected {
+      background: var(--success);
+    }
+
+    .mcp-badge.disconnected {
+      background: var(--text-secondary);
+    }
+
+    .mcp-badge.error {
+      background: var(--error);
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-overlay.visible,
+    .modal.visible {
+      display: block;
+    }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-header h3 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      padding: 0;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: var(--text);
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>LLM Configuration</h1>
+    <p class="subtitle">Configure AI providers for the Pega Agent with advanced fallback and routing options</p>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="providers">Providers</button>
+      <button class="tab" data-tab="fallback">Fallback Order</button>
+      <button class="tab" data-tab="mcp">MCP</button>
+      <button class="tab" data-tab="advanced">Advanced</button>
+    </div>
+
+    <!-- Providers Tab -->
+    <div id="providers" class="tab-content active">
+      <!-- Anthropic -->
+      <div class="card" data-provider="anthropic">
+        <div class="card-header">
+          <h3>
+            <span class="provider-icon" style="background: #D97757;">🅰️</span>
+            Anthropic Claude
+          </h3>
+          <div class="toggle-wrapper">
+            <span class="priority-badge">Priority 1</span>
+            <label class="toggle">
+              <input type="checkbox" id="anthropic-enabled" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="anthropic-key">API Key</label>
+            <input type="password" id="anthropic-key" placeholder="sk-ant-...">
+            <p class="form-hint">Get your key from <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></p>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="anthropic-model">Model</label>
+              <select id="anthropic-model">
+                <option value="claude-sonnet-4-20250514">Claude Sonnet 4 (Recommended)</option>
+                <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
+                <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku (Fast)</option>
+                <option value="claude-opus-4-20250514">Claude Opus 4 (Most Capable)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Priority</label>
+              <select id="anthropic-priority">
+                <option value="1">1 (Highest)</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4 (Lowest)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="advanced-section">
+            <div class="advanced-toggle">
+              <span>▼</span> Advanced Options
+            </div>
+            <div class="advanced-options">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Max Tokens</label>
+                  <input type="number" id="anthropic-max-tokens" value="2048" min="100" max="8192">
+                </div>
+                <div class="form-group">
+                  <label>Temperature</label>
+                  <div class="range-group">
+                    <input type="range" id="anthropic-temperature" min="0" max="1" step="0.1" value="0.1">
+                    <span class="range-value">0.1</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Custom Endpoint (Optional)</label>
+                <input type="text" id="anthropic-endpoint" placeholder="https://api.anthropic.com">
+              </div>
+              <button class="btn btn-secondary" class="test-connection-btn" data-provider="anthropic">Test Connection</button>
+              <div id="anthropic-test-result" class="test-result"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OpenAI -->
+      <div class="card" data-provider="openai">
+        <div class="card-header">
+          <h3>
+            <span class="provider-icon" style="background: #10a37f;">🟢</span>
+            OpenAI
+          </h3>
+          <div class="toggle-wrapper">
+            <label class="toggle">
+              <input type="checkbox" id="openai-enabled">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="openai-key">API Key</label>
+            <input type="password" id="openai-key" placeholder="sk-...">
+            <p class="form-hint">Get your key from <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a></p>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="openai-model">Model</label>
+              <select id="openai-model">
+                <option value="gpt-4o">GPT-4o (Recommended)</option>
+                <option value="gpt-4o-mini">GPT-4o Mini (Fast)</option>
+                <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                <option value="o1-preview">o1 Preview (Reasoning)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Priority</label>
+              <select id="openai-priority">
+                <option value="1">1 (Highest)</option>
+                <option value="2" selected>2</option>
+                <option value="3">3</option>
+                <option value="4">4 (Lowest)</option>
+              </select>
+            </div>
+          </div>
+          <div class="advanced-section">
+            <div class="advanced-toggle">
+              <span>▼</span> Advanced Options
+            </div>
+            <div class="advanced-options">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Max Tokens</label>
+                  <input type="number" id="openai-max-tokens" value="2048" min="100" max="8192">
+                </div>
+                <div class="form-group">
+                  <label>Temperature</label>
+                  <div class="range-group">
+                    <input type="range" id="openai-temperature" min="0" max="1" step="0.1" value="0.1">
+                    <span class="range-value">0.1</span>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-secondary test-connection-btn" data-provider="openai">Test Connection</button>
+              <div id="openai-test-result" class="test-result"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Azure OpenAI -->
+      <div class="card" data-provider="azure">
+        <div class="card-header">
+          <h3>
+            <span class="provider-icon" style="background: #0078D4;">🔷</span>
+            Azure OpenAI
+          </h3>
+          <div class="toggle-wrapper">
+            <label class="toggle">
+              <input type="checkbox" id="azure-enabled">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="azure-endpoint">Endpoint</label>
+            <input type="text" id="azure-endpoint" placeholder="https://your-resource.openai.azure.com">
+          </div>
+          <div class="form-group">
+            <label for="azure-key">API Key</label>
+            <input type="password" id="azure-key" placeholder="Azure API Key">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="azure-deployment">Deployment Name</label>
+              <input type="text" id="azure-deployment" placeholder="gpt-4o-deployment">
+            </div>
+            <div class="form-group">
+              <label for="azure-api-version">API Version</label>
+              <select id="azure-api-version">
+                <option value="2024-02-15-preview">2024-02-15-preview</option>
+                <option value="2024-08-01-preview">2024-08-01-preview</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="azure-priority">
+              <option value="1">1 (Highest)</option>
+              <option value="2">2</option>
+              <option value="3" selected>3</option>
+              <option value="4">4 (Lowest)</option>
+            </select>
+          </div>
+          <button class="btn btn-secondary test-connection-btn" data-provider="azure">Test Connection</button>
+          <div id="azure-test-result" class="test-result"></div>
+        </div>
+      </div>
+
+      <!-- Google AI -->
+      <div class="card" data-provider="google">
+        <div class="card-header">
+          <h3>
+            <span class="provider-icon" style="background: #4285F4;">🔵</span>
+            Google AI (Gemini)
+          </h3>
+          <div class="toggle-wrapper">
+            <label class="toggle">
+              <input type="checkbox" id="google-enabled">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="google-key">API Key</label>
+            <input type="password" id="google-key" placeholder="AIza...">
+            <p class="form-hint">Get your key from <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a></p>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="google-model">Model</label>
+              <select id="google-model">
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash (Fast)</option>
+                <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Experimental)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Priority</label>
+              <select id="google-priority">
+                <option value="1">1 (Highest)</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4" selected>4 (Lowest)</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-secondary test-connection-btn" data-provider="google">Test Connection</button>
+          <div id="google-test-result" class="test-result"></div>
+        </div>
+      </div>
+
+      <!-- Mistral -->
+      <div class="card" data-provider="mistral">
+        <div class="card-header">
+          <h3>
+            <span class="provider-icon" style="background: #FF7000;">🔶</span>
+            Mistral AI
+          </h3>
+          <div class="toggle-wrapper">
+            <label class="toggle">
+              <input type="checkbox" id="mistral-enabled">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="mistral-key">API Key</label>
+            <input type="password" id="mistral-key" placeholder="Your Mistral API key">
+            <p class="form-hint">Get your key from <a href="https://console.mistral.ai" target="_blank">console.mistral.ai</a></p>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="mistral-model">Model</label>
+              <select id="mistral-model">
+                <option value="mistral-large-latest">Mistral Large (Most Capable)</option>
+                <option value="mistral-medium-latest">Mistral Medium (Balanced)</option>
+                <option value="mistral-small-latest">Mistral Small (Fast)</option>
+                <option value="codestral-latest">Codestral (Code-focused)</option>
+                <option value="open-mistral-nemo">Mistral NeMo (Open)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Priority</label>
+              <select id="mistral-priority">
+                <option value="1">1 (Highest)</option>
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4 (Lowest)</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-secondary test-connection-btn" data-provider="mistral">Test Connection</button>
+          <div id="mistral-test-result" class="test-result"></div>
+
+          <div class="advanced-section">
+            <div class="advanced-toggle">
+              <span>▼</span> Advanced Options
+            </div>
+            <div class="advanced-options">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Max Tokens</label>
+                  <input type="number" id="mistral-max-tokens" value="2048" min="100" max="8192">
+                </div>
+                <div class="form-group">
+                  <label>Temperature</label>
+                  <div class="range-group">
+                    <input type="range" id="mistral-temperature" min="0" max="1" step="0.1" value="0.1">
+                    <span class="range-value">0.1</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom/Local -->
+      <div class="card" data-provider="local">
+        <div class="card-header">
+          <h3>
+            <span class="provider-icon" style="background: #6B7280;">⚙️</span>
+            Custom / Local LLM
+          </h3>
+          <div class="toggle-wrapper">
+            <label class="toggle">
+              <input type="checkbox" id="local-enabled">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="local-endpoint">Endpoint URL</label>
+            <input type="text" id="local-endpoint" placeholder="http://localhost:11434/v1/chat/completions">
+            <p class="form-hint">Supports OpenAI-compatible APIs (Ollama, LM Studio, vLLM, etc.)</p>
+          </div>
+          <div class="form-group">
+            <label for="local-key">API Key (Optional)</label>
+            <input type="password" id="local-key" placeholder="Leave empty if not required">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="local-model">Model Name</label>
+              <input type="text" id="local-model" placeholder="llama3.2, mistral, codellama">
+            </div>
+            <div class="form-group">
+              <label>Priority</label>
+              <select id="local-priority">
+                <option value="1">1 (Highest)</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4" selected>4 (Lowest)</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-secondary test-connection-btn" data-provider="local">Test Connection</button>
+          <div id="local-test-result" class="test-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fallback Tab -->
+    <div id="fallback" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <h3>Fallback Configuration</h3>
+        </div>
+        <div class="card-body">
+          <p style="margin-bottom: 16px; color: var(--text-secondary);">
+            Configure how the agent handles provider failures. When a provider fails, it automatically tries the next one in priority order.
+          </p>
+
+          <div class="form-group">
+            <label class="toggle-wrapper">
+              <label class="toggle">
+                <input type="checkbox" id="fallback-enabled" checked>
+                <span class="toggle-slider"></span>
+              </label>
+              <span>Enable Automatic Fallback</span>
+            </label>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="max-retries">Max Retries per Provider</label>
+              <select id="max-retries">
+                <option value="1">1 retry</option>
+                <option value="2" selected>2 retries</option>
+                <option value="3">3 retries</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="timeout">Request Timeout</label>
+              <select id="timeout">
+                <option value="5000">5 seconds</option>
+                <option value="10000" selected>10 seconds</option>
+                <option value="20000">20 seconds</option>
+                <option value="30000">30 seconds</option>
+              </select>
+            </div>
+          </div>
+
+          <h4 style="margin: 24px 0 12px;">Fallback Order (drag to reorder)</h4>
+          <div class="fallback-order" id="fallback-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MCP Tab -->
+    <div id="mcp" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <h3>MCP Server Connections</h3>
+        </div>
+        <div class="card-body">
+          <p style="margin-bottom: 16px; color: var(--text-secondary);">
+            Connect to external MCP (Model Context Protocol) servers to extend the agent's capabilities with additional tools and resources.
+          </p>
+
+          <!-- Server List -->
+          <div id="mcp-server-list" class="mcp-server-list">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Add Server Button -->
+          <button class="btn btn-secondary" id="add-mcp-btn" style="margin-top: 16px;">
+            + Add MCP Server
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Exposed MCP Tools</h3>
+        </div>
+        <div class="card-body">
+          <p style="margin-bottom: 16px; color: var(--text-secondary);">
+            These tools are exposed by this extension and can be used by external MCP clients.
+          </p>
+
+          <div id="mcp-tools-list" class="mcp-tools-list">
+            <div class="mcp-tool-item">
+              <div class="mcp-tool-header">
+                <strong>pega_get_case_summary</strong>
+                <span class="mcp-badge">tool</span>
+              </div>
+              <p>Get an AI-generated summary of the current Pega case</p>
+            </div>
+            <div class="mcp-tool-item">
+              <div class="mcp-tool-header">
+                <strong>pega_execute_action_plan</strong>
+                <span class="mcp-badge">tool</span>
+              </div>
+              <p>Execute a sequence of browser automation actions on a Pega case</p>
+            </div>
+            <div class="mcp-tool-item">
+              <div class="mcp-tool-header">
+                <strong>pega_get_dom_snapshot</strong>
+                <span class="mcp-badge">tool</span>
+              </div>
+              <p>Get a semantic snapshot of the current Pega UI</p>
+            </div>
+            <div class="mcp-tool-item">
+              <div class="mcp-tool-header">
+                <strong>pega_detect_framework</strong>
+                <span class="mcp-badge">tool</span>
+              </div>
+              <p>Detect if the current page is a Pega application</p>
+            </div>
+            <div class="mcp-tool-item">
+              <div class="mcp-tool-header">
+                <strong>pega_update_field</strong>
+                <span class="mcp-badge">tool</span>
+              </div>
+              <p>Update a specific field in the current Pega case</p>
+            </div>
+            <div class="mcp-tool-item">
+              <div class="mcp-tool-header">
+                <strong>pega_click_action</strong>
+                <span class="mcp-badge">tool</span>
+              </div>
+              <p>Click an action button in the Pega UI</p>
+            </div>
+            <div class="mcp-tool-item">
+              <div class="mcp-tool-header">
+                <strong>pega_navigate_case</strong>
+                <span class="mcp-badge">tool</span>
+              </div>
+              <p>Navigate to a specific case or work queue in Pega</p>
+            </div>
+            <div class="mcp-tool-item">
+              <div class="mcp-tool-header">
+                <strong>pega_wait_for</strong>
+                <span class="mcp-badge">tool</span>
+              </div>
+              <p>Wait for a specific condition in the Pega UI</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Exposed MCP Resources</h3>
+        </div>
+        <div class="card-body">
+          <p style="margin-bottom: 16px; color: var(--text-secondary);">
+            These resources are exposed by this extension for external MCP clients to read.
+          </p>
+
+          <div id="mcp-resources-list" class="mcp-resources-list">
+            <div class="mcp-resource-item">
+              <div class="mcp-resource-header">
+                <strong>pega://current-case</strong>
+                <span class="mcp-badge resource">resource</span>
+              </div>
+              <p>Current Pega case with all field values and metadata</p>
+            </div>
+            <div class="mcp-resource-item">
+              <div class="mcp-resource-header">
+                <strong>pega://case-history</strong>
+                <span class="mcp-badge resource">resource</span>
+              </div>
+              <p>History of actions taken on the current case</p>
+            </div>
+            <div class="mcp-resource-item">
+              <div class="mcp-resource-header">
+                <strong>pega://available-actions</strong>
+                <span class="mcp-badge resource">resource</span>
+              </div>
+              <p>List of actions available for the current case</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MCP Server Modal -->
+      <div id="mcp-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="mcp-modal-title">Add MCP Server</h3>
+            <button class="modal-close" id="mcp-modal-close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="mcp-server-name">Server Name *</label>
+              <input type="text" id="mcp-server-name" placeholder="my-mcp-server">
+              <p class="form-hint">A unique name to identify this server</p>
+            </div>
+
+            <div class="form-group">
+              <label for="mcp-transport">Transport Type *</label>
+              <select id="mcp-transport">
+                <option value="websocket">WebSocket</option>
+                <option value="http">HTTP</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="mcp-url-group">
+              <label for="mcp-url">Server URL *</label>
+              <input type="text" id="mcp-url" placeholder="ws://localhost:8080/mcp">
+              <p class="form-hint">WebSocket or HTTP endpoint URL</p>
+            </div>
+
+            <div class="form-group">
+              <label for="mcp-headers">Custom Headers (Optional)</label>
+              <textarea id="mcp-headers" rows="3" placeholder='{"Authorization": "Bearer token"}'></textarea>
+              <p class="form-hint">JSON object with custom headers for HTTP transport</p>
+            </div>
+
+            <div class="form-group">
+              <label class="toggle-wrapper">
+                <label class="toggle">
+                  <input type="checkbox" id="mcp-enabled" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+                <span>Enable this server</span>
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" id="mcp-cancel-btn">Cancel</button>
+            <button class="btn btn-primary" id="mcp-save-btn">Save Server</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced Tab -->
+    <div id="advanced" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <h3>Global Settings</h3>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="default-max-tokens">Default Max Tokens</label>
+            <input type="number" id="default-max-tokens" value="2048" min="100" max="8192">
+            <p class="form-hint">Maximum tokens for LLM responses (can be overridden per provider)</p>
+          </div>
+
+          <div class="form-group">
+            <label for="default-temperature">Default Temperature</label>
+            <div class="range-group">
+              <input type="range" id="default-temperature" min="0" max="1" step="0.1" value="0.1">
+              <span class="range-value">0.1</span>
+            </div>
+            <p class="form-hint">Lower = more focused, Higher = more creative</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Performance Tuning</h3>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="toggle-wrapper">
+              <label class="toggle">
+                <input type="checkbox" id="streaming-enabled">
+                <span class="toggle-slider"></span>
+              </label>
+              <span>Enable Streaming Responses</span>
+            </label>
+            <p class="form-hint">Show responses as they're generated (faster perceived response)</p>
+          </div>
+
+          <div class="form-group">
+            <label class="toggle-wrapper">
+              <label class="toggle">
+                <input type="checkbox" id="cache-enabled" checked>
+                <span class="toggle-slider"></span>
+              </label>
+              <span>Enable Response Caching</span>
+            </label>
+            <p class="form-hint">Cache identical requests to reduce API calls</p>
+          </div>
+
+          <div class="form-group">
+            <label for="cache-ttl">Cache Duration</label>
+            <select id="cache-ttl">
+              <option value="300000">5 minutes</option>
+              <option value="600000" selected>10 minutes</option>
+              <option value="1800000">30 minutes</option>
+              <option value="3600000">1 hour</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Debug & Logging</h3>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="log-level">Log Level</label>
+            <select id="log-level">
+              <option value="error">Error Only</option>
+              <option value="warn" selected>Warnings & Errors</option>
+              <option value="info">Info, Warnings & Errors</option>
+              <option value="debug">Debug (Verbose)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="toggle-wrapper">
+              <label class="toggle">
+                <input type="checkbox" id="log-requests">
+                <span class="toggle-slider"></span>
+              </label>
+              <span>Log All API Requests</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="btn-group">
+      <button class="btn btn-primary" id="save-btn">Save Configuration</button>
+      <button class="btn btn-secondary" id="reset-btn">Reset to Defaults</button>
+      <button class="btn btn-secondary" id="export-btn">Export</button>
+      <button class="btn btn-secondary" id="import-btn">Import</button>
+      <input type="file" id="import-file" accept=".json" style="display:none">
+    </div>
+
+    <div id="status" class="status"></div>
+  </div>
+
+  <script src="settings.js"></script>
+</body>
+</html>

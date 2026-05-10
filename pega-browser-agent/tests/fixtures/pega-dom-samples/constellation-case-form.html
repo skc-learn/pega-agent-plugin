@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pega Case - Constellation</title>
+  <style>
+    * { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    body {
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      overflow-y: auto;
+    }
+
+    /* Header */
+    header {
+      padding: 20px;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 18px;
+      color: #333;
+      margin: 0;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #e0e0e0;
+      overflow-x: hidden;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .tab.active {
+      background: #2E75B6;
+      color: white;
+      border-bottom: 2px solid #fff;
+    }
+
+    .tab-content {
+      padding: 20px;
+      flex: 1;
+    }
+
+    /* Main content */
+    .case-info {
+      margin-bottom: 20px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+    }
+
+    .case-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .case-id {
+      font-weight: 600;
+      color: #2E75B6;
+    }
+
+    .case-type {
+      background: #e0e0e0;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .case-status {
+      background: #e0e0e0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: #333;
+      font-size: 11px;
+    }
+
+    .stage {
+      background: #e0e0e0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: #333;
+      font-size: 12px;
+    }
+
+    /* Form */
+    .form-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+
+    .form-group textarea {
+      width: 100%;
+      min-height: 60px;
+      padding: 8px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      resize: vertical;
+    }
+
+    /* Button */
+    .btn {
+      padding: 8px 16px;
+      background: #2E75B6;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #1e5a8f;
+    }
+
+    .btn:secondary {
+      background: #f5f5f5;
+      color: #666;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Activity */
+    .activity {
+      margin-top: 10px;
+      padding: 10px;
+      border-top: 1px solid #e0e0e0;
+      border-radius: 8px;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .activity-item.success {
+      color: #4CAF50;
+    }
+
+    .activity-item.error {
+      color: #F44336;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">🤖</div>
+    <h1>Pega Case Management</h1>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" data-tab="case">Case</button>
+    <button class="tab" data-tab="actions">Actions</button>
+    <button class="tab" data-tab="summary">Summary</button>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content active" id="case-tab">
+    <div class="case-header">
+      <span class="case-id">CASE-ABC-123</span>
+      <span class="case-type">Loan Request</span>
+      <span class="stage">Initial Review</span>
+    </div>
+
+    <div class="form-container">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Case ID</label>
+          <input type="text" value="CASE-ABC-123" data-test-id="case-id" readonly>
+        </div>
+        <div class="form-group">
+          <label>Case Type</label>
+          <input type="text" value="Loan Request" data-test-id="case-type" readonly>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select>
+            <option>New</option>
+            <option>In Progress</option>
+            <option>Resolved</option>
+            <option>Closed</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn" id="submit-case-btn">Submit</button>
+    </div>
+  </div>
+
+  <!-- Actions Tab -->
+  <div class="tab-content" id="actions-tab">
+    <div class="actions-header">
+      <h2>Available Actions</h2>
+    </div>
+
+    <div class="actions-list">
+      <div class="action-item">
+        <button class="action-btn"> data-action="submit">Submit</button>
+        <span class="action-desc">Submit this case for approval</span>
+      </div>
+      <div class="action-item">
+        <button class="action-btn" data-action="save">Save Draft</button>
+        <span class="action-desc">Save current progress</span>
+      </div>
+      <div class="action-item">
+        <button class="action-btn" data-action="next">Next Step</button>
+        <span class="action-desc">Proceed to next step</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Tab -->
+  <div class="tab-content" id="summary-tab">
+    <div class="summary-header">
+      <h2>Case Summary</h2>
+      <div class="feedback-buttons">
+        <button class="feedback-btn" data-type="positive">👍</button>
+        <button class="feedback-btn" data-type="negative">👎</button>
+      </div>
+    </div>
+
+    <div class="summary-content">
+      <div class="summary-section">
+        <h3>Situation</h3>
+        <p class="value">Customer requested a loan modification to their primary residence. The change involves reviewing their credit history, employment, and income verification.</p>
+      </div>
+
+      <div class="summary-section">
+        <h3>History</h3>
+        <p class="value">Case was through initial review and a manual processing steps. Customer contacted support for additional information. All communication happened through email and</p>
+      </div>
+
+      <div class="summary-section">
+        <h3>Current State</h3>
+        <p class="value">Case is currently under review with pending compliance items</ all open actions completed successfully.</p>
+      </div>
+
+      <div class="summary-section">
+        <h3>⚠ Risk Signals</h3>
+        <ul>
+          <li>Customer has not provided all required documents</li>
+          <li>Income verification flagged potential fraud risk</li>
+        </ul>
+      </div>
+
+      <div class="summary-section recommendation">
+        <h3>→ Recommended Action</h3>
+        <p class="value">Proceed to next step for final review</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="panel.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "security": {
+    "piiMaskingEnabled": true,
+    "piiCategoriesToMask": ["NAME", "SSN", "DOB", "EMAIL", "PHONE", "ACCOUNT", "ADDRESS"],
+    "localProcessingOnly": false,
+    "allowedLLMProviders": ["anthropic", "mistral"],
+    "auditLoggingEnabled": true,
+    "requireConfirmationForAllActions": false,
+    "disabledCapabilities": []
+  },
+  "llm": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-4-20250514",
+    "maxTokens": 1500,
+    "temperature": 0.1
+  },
+  "pega": {
+    "targetDomains": [],
+    "useDirectAPI": false,
+    "cdh": {
+      "enabled": false
+    }
+  },
+  "roleRestrictions": {
+    "caseWorker": ["SUMMARIZE_CASE", "UPDATE_FIELD", "NEXT_STEP", "SAVE_CASE", "SHOW_QUEUE"],
+    "supervisor": ["*"],
+    "readOnly": ["SUMMARIZE_CASE", "SHOW_QUEUE", "EXPLAIN"]
+  }
+}

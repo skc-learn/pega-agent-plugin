@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Pega Case Management Agent",
+  "version": "1.0.0",
+  "description": "Intelligent co-pilot for Pega Infinity case workers",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "sidePanel"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "side_panel": {
+    "default_path": "dist/side-panel.html"
+  },
+  "action": {
+    "default_icon": {
+      "16": "dist/icons/icon16.png",
+      "48": "dist/icons/icon48.png",
+      "128": "dist/icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "dist/settings.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "16": "dist/icons/icon16.png",
+    "48": "dist/icons/icon48.png",
+    "128": "dist/icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["dist/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "background": {
+    "service_worker": "dist/sw.js",
+    "type": "module"
+  }
+}

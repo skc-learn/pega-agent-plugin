@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pega Infinity - Loan Application</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f7fa;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: #1a365d;
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-logo {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+    }
+
+    .nav-item {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+
+    .nav-item:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .nav-item.active {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 4px;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    /* Case Header */
+    .case-header {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .case-id {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a365d;
+    }
+
+    .case-badge {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-status {
+      background: #e3f2fd;
+      color: #1e40af;
+    }
+
+    .badge-stage {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge-priority {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    /* Stage Progress */
+    .stage-progress {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .stage-progress h3 {
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    .stages {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .stages::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 40px;
+      right: 40px;
+      height: 4px;
+      background: #e5e7eb;
+    }
+
+    .stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stage-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .stage.completed .stage-circle {
+      background: #10b981;
+    }
+
+    .stage.active .stage-circle {
+      background: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+    }
+
+    .stage-label {
+      font-size: 12px;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    .stage.active .stage-label {
+      color: #3b82f6;
+      font-weight: 500;
+    }
+
+    /* Form Container */
+    .form-container {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .form-section {
+      margin-bottom: 24px;
+    }
+
+    .form-section h4 {
+      color: #374151;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-group textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    /* Actions */
+    .actions-bar {
+      background: white;
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-top: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #2563eb;
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+
+    .btn-success {
+      background: #10b981;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #059669;
+    }
+
+    /* Demo Overlay */
+    .demo-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .demo-overlay.hidden {
+      display: none;
+    }
+
+    .demo-card {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .demo-card h2 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: #1a365d;
+    }
+
+    .demo-card p {
+      color: #6b7280;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .demo-steps {
+      text-align: left;
+      margin-bottom: 24px;
+    }
+
+    .demo-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .demo-step-num {
+      width: 28px;
+      height: 28px;
+      background: #3b82f6;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .demo-step-content h4 {
+      font-size: 14px;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+
+    .demo-step-content p {
+      font-size: 13px;
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .start-demo-btn {
+      background: linear-gradient(135deg, #3b82f6, #1a365d);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .start-demo-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* Pega-specific attributes for detection */
+    [data-test-id] {
+      /* Ensure test IDs are visible */
+    }
+  </style>
+</head>
+<body>
+  <!-- Demo Overlay -->
+  <div class="demo-overlay" id="demoOverlay">
+    <div class="demo-card">
+      <h2>Pega Browser Agent Demo</h2>
+      <p>See how the AI-powered assistant helps you work faster in Pega Infinity.</p>
+
+      <div class="demo-steps">
+        <div class="demo-step">
+          <div class="demo-step-num">1</div>
+          <div class="demo-step-content">
+            <h4>Load the Extension</h4>
+            <p>Open chrome://extensions and load the unpacked extension</p>
+          </div>
+        </div>
+        <div class="demo-step">
+          <div class="demo-step-num">2</div>
+          <div class="demo-step-content">
+            <h4>Click the Robot Icon</h4>
+            <p>Open the side panel from the toolbar</p>
+          </div>
+        </div>
+        <div class="demo-step">
+          <div class="demo-step-num">3</div>
+          <div class="demo-step-content">
+            <h4>Try Commands</h4>
+            <p>Type "Summarize this case" or "What should I do next?"</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="start-demo-btn" onclick="startDemo()">Start Demo</button>
+    </div>
+  </div>
+
+  <!-- App Container -->
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <span>⚡</span> Pega Infinity
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-item active">
+          <div class="nav-icon"></div>
+          My Work
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon"></div>
+          Cases
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon"></div>
+          Reports
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon"></div>
+          Dashboards
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon"></div>
+          Settings
+        </div>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Case Header -->
+      <div class="case-header">
+        <div>
+          <div class="case-id" data-test-id="case-id">LOAN-2024-001234</div>
+          <div style="color: #6b7280; font-size: 14px; margin-top: 4px;">
+            Personal Loan Application • Opened 2 days ago
+          </div>
+        </div>
+        <div class="case-badge">
+          <span class="badge badge-status">In Progress</span>
+          <span class="badge badge-stage">Underwriting</span>
+          <span class="badge badge-priority">High</span>
+        </div>
+      </div>
+
+      <!-- Stage Progress -->
+      <div class="stage-progress">
+        <h3>Case Lifecycle</h3>
+        <div class="stages">
+          <div class="stage completed">
+            <div class="stage-circle">✓</div>
+            <div class="stage-label">Intake</div>
+          </div>
+          <div class="stage completed">
+            <div class="stage-circle">✓</div>
+            <div class="stage-label">Review</div>
+          </div>
+          <div class="stage active">
+            <div class="stage-circle">3</div>
+            <div class="stage-label">Underwriting</div>
+          </div>
+          <div class="stage">
+            <div class="stage-circle">4</div>
+            <div class="stage-label">Decision</div>
+          </div>
+          <div class="stage">
+            <div class="stage-circle">5</div>
+            <div class="stage-label">Funding</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Container -->
+      <div class="form-container" data-test-id="LoanApplication-Form">
+        <!-- Applicant Information -->
+        <div class="form-section">
+          <h4>Applicant Information</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" data-test-id="Field_FirstName" value="Jennifer" aria-label="First Name">
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" data-test-id="Field_LastName" value="Martinez" aria-label="Last Name">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" data-test-id="Field_Email" value="jennifer.martinez@email.com" aria-label="Email">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Phone</label>
+              <input type="tel" data-test-id="Field_Phone" value="(555) 123-4567" aria-label="Phone">
+            </div>
+            <div class="form-group">
+              <label>Date of Birth</label>
+              <input type="text" data-test-id="Field_DOB" value="04/15/1985" aria-label="Date of Birth">
+            </div>
+            <div class="form-group">
+              <label>SSN</label>
+              <input type="text" data-test-id="Field_SSN" value="***-**-4567" aria-label="Social Security Number">
+            </div>
+          </div>
+        </div>
+
+        <!-- Loan Details -->
+        <div class="form-section">
+          <h4>Loan Details</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Loan Amount</label>
+              <input type="text" data-test-id="Field_LoanAmount" value="$25,000" aria-label="Loan Amount">
+            </div>
+            <div class="form-group">
+              <label>Loan Purpose</label>
+              <select data-test-id="Field_LoanPurpose" aria-label="Loan Purpose">
+                <option selected>Debt Consolidation</option>
+                <option>Home Improvement</option>
+                <option>Vehicle</option>
+                <option>Education</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Loan Term</label>
+              <select data-test-id="Field_LoanTerm" aria-label="Loan Term">
+                <option>24 months</option>
+                <option selected>36 months</option>
+                <option>48 months</option>
+                <option>60 months</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Annual Income</label>
+              <input type="text" data-test-id="Field_AnnualIncome" value="$85,000" aria-label="Annual Income">
+            </div>
+            <div class="form-group">
+              <label>Employment Status</label>
+              <select data-test-id="Field_EmploymentStatus" aria-label="Employment Status">
+                <option selected>Full-Time</option>
+                <option>Part-Time</option>
+                <option>Self-Employed</option>
+                <option>Retired</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Credit Score</label>
+              <input type="text" data-test-id="Field_CreditScore" value="720" aria-label="Credit Score">
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="form-section">
+          <h4>Additional Information</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Address</label>
+              <input type="text" data-test-id="Field_Address" value="123 Main Street, Apt 4B" aria-label="Address">
+            </div>
+            <div class="form-group">
+              <label>City, State, ZIP</label>
+              <input type="text" data-test-id="Field_CityStateZip" value="Springfield, IL 62701" aria-label="City State ZIP">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Notes</label>
+              <textarea data-test-id="Field_Notes" aria-label="Notes" placeholder="Add any additional notes...">Customer has been with their employer for 5 years. Previous loan history shows on-time payments.</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions Bar -->
+      <div class="actions-bar">
+        <div style="color: #6b7280; font-size: 13px;">
+          Last updated: Today at 2:34 PM by System
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-secondary" data-test-id="Action_Save">Save Draft</button>
+          <button class="btn btn-secondary" data-test-id="Action_Assign">Reassign</button>
+          <button class="btn btn-primary" data-test-id="Action_Next">Next Step</button>
+          <button class="btn btn-success" data-test-id="Action_Submit">Approve</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Demo overlay control
+    function startDemo() {
+      document.getElementById('demoOverlay').classList.add('hidden');
+
+      // Show demo toast
+      showDemoToast('Extension ready! Click the robot icon in the toolbar to open the side panel.');
+    }
+
+    function showDemoToast(message) {
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #1a365d;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 9999;
+        font-size: 14px;
+      `;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+
+      setTimeout(() => toast.remove(), 5000);
+    }
+
+    // Simulate Pega global object for detection
+    window.pega = {
+      ui: {
+        version: '23.1.0',
+        framework: 'constellation'
+      }
+    };
+  </script>
+</body>
+</html>

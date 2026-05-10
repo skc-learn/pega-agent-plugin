@@ -1,0 +1,236 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Pega Browser Agent Enterprise Configuration",
+  "description": "Enterprise governance configuration for Pega Case Management Browser Agent",
+  "type": "object",
+  "required": ["version", "security", "llm", "pega", "roleRestrictions"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$",
+      "description": "Configuration schema version"
+    },
+    "security": {
+      "type": "object",
+      "required": ["piiMaskingEnabled", "piiCategoriesToMask", "auditLoggingEnabled"],
+      "properties": {
+        "piiMaskingEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable PII masking before external transmission"
+        },
+        "piiCategoriesToMask": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["NAME", "SSN", "DOB", "EMAIL", "PHONE", "ACCOUNT", "ADDRESS"]
+          },
+          "description": "PII categories to mask"
+        },
+        "localProcessingOnly": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable all external LLM calls"
+        },
+        "allowedLLMProviders": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["anthropic", "azure-openai", "openai"]
+          },
+          "description": "Allowed LLM providers"
+        },
+        "auditLoggingEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable audit logging"
+        },
+        "auditLogEndpoint": {
+          "type": "string",
+          "format": "uri",
+          "description": "Enterprise audit log endpoint URL"
+        },
+        "requireConfirmationForAllActions": {
+          "type": "boolean",
+          "default": false,
+          "description": "Require confirmation for all actions"
+        },
+        "disabledCapabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "SUMMARIZE_CASE",
+              "SUBMIT_CASE",
+              "SAVE_CASE",
+              "NEXT_STEP",
+              "SHOW_QUEUE",
+              "UPDATE_FIELD",
+              "ESCALATE",
+              "CREATE_CASE",
+              "SEARCH",
+              "EXPLAIN"
+            ]
+          },
+          "description": "Capabilities to disable"
+        }
+      }
+    },
+    "llm": {
+      "type": "object",
+      "required": ["provider"],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": ["anthropic", "azure-openai", "openai"],
+          "description": "LLM provider"
+        },
+        "endpoint": {
+          "type": "string",
+          "format": "uri",
+          "description": "Custom API endpoint (for Azure OpenAI)"
+        },
+        "model": {
+          "type": "string",
+          "description": "Model identifier"
+        },
+        "maxTokens": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 4000,
+          "default": 1500,
+          "description": "Maximum tokens per request"
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.1,
+          "description": "LLM temperature for response generation"
+        }
+      }
+    },
+    "pega": {
+      "type": "object",
+      "properties": {
+        "targetDomains": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "hostname"
+          },
+          "description": "Specific Pega domains to target (empty = all Pega domains)"
+        },
+        "useDirectAPI": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use direct Pega API calls instead of DOM parsing (Rung 2+)"
+        },
+        "apiVersion": {
+          "type": "string",
+          "description": "Pega API version for direct API calls"
+        },
+        "cdh": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable Customer Decision Hub integration (Rung 3+)"
+            },
+            "endpoint": {
+              "type": "string",
+              "format": "uri",
+              "description": "CDH endpoint URL"
+            }
+          }
+        },
+        "processAI": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable Process AI integration (Rung 3+)"
+            }
+          }
+        },
+        "predictionStudio": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable Prediction Studio integration (Rung 3+)"
+            }
+          }
+        }
+      }
+    },
+    "roleRestrictions": {
+      "type": "object",
+      "description": "Capability restrictions by user role",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Array of allowed intents or ['*'] for all"
+      },
+      "propertyNames": {
+        "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+      }
+    },
+    "ui": {
+      "type": "object",
+      "properties": {
+        "theme": {
+          "type": "string",
+          "enum": ["light", "dark", "auto"],
+          "default": "auto",
+          "description": "UI theme"
+        },
+        "language": {
+          "type": "string",
+          "default": "en",
+          "description": "UI language code"
+        },
+        "autoOpenPanel": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically open side panel on Pega detection"
+        },
+        "keyboardShortcut": {
+          "type": "string",
+          "default": "Ctrl+Shift+P",
+          "description": "Keyboard shortcut to toggle panel"
+        }
+      }
+    },
+    "features": {
+      "type": "object",
+      "properties": {
+        "autoSummarize": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically generate summary on case open"
+        },
+        "showRecommendations": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show AI recommendations"
+        },
+        "enableVoiceInput": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable voice input for commands"
+        },
+        "showTooltips": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show helpful tooltips"
+        }
+      }
+    }
+  }
+}
